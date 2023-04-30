@@ -4,14 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - IncPaddleWidth
-  - DecBallSpeed
-  - Brick
-  - DecPaddleWidth
-  - IncPaddleSpeed
-  - DecPaddleSpeed
-  - IncBallSpeed
-  - ExtraLife
+  - Laser
+  - Enemy
+  - Sword
+  - Checkpoint
+  - FallDeath
   layers:
   - Default
   - TransparentFX

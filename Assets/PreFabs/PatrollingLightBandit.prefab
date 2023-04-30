@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 5229895316409560788}
   m_Layer: 0
   m_Name: Light Bandit
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,12 +162,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284b25be785222e4491a2d4136534d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  health: 20
+  currentPatrolPointIndex: 0
+  player: {fileID: 0}
   patrolPoints:
   - {fileID: 5229895315947793513}
   - {fileID: 5229895315541449004}
   currentPatrolPoint: {fileID: 0}
-  currentPatrolPointIndex: 0
-  speed: 0
 --- !u!95 &5229895316409560790
 Animator:
   serializedVersion: 5
@@ -178,7 +180,7 @@ Animator:
   m_GameObject: {fileID: 5229895316409560789}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2fbd191c055714d4d930eb993ee8938d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4a25ed0170e99404e8b0b12a7dfd1bea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
