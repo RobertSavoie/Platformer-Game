@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - IncPaddleWidth
+  - DecBallSpeed
+  - Brick
+  - DecPaddleWidth
+  - IncPaddleSpeed
+  - DecPaddleSpeed
+  - IncBallSpeed
+  - ExtraLife
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 760161317
+    locked: 0
+  - name: Platform
+    uniqueID: 244711111
+    locked: 0
+  - name: 'Foreground '
+    uniqueID: 173277545
+    locked: 0
