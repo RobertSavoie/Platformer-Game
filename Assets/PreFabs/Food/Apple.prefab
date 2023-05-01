@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6666196702761144112}
   - component: {fileID: 6666196702761144115}
   - component: {fileID: -6518172020066334998}
+  - component: {fileID: 1553738294}
   m_Layer: 0
   m_Name: Apple
   m_TagString: Food
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6666196702761144114}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.65, y: -1.859, z: 0.042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -111,3 +112,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.21875, y: 0.28125}
   m_EdgeRadius: 0
+--- !u!114 &1553738294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666196702761144114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c9c466a71fb9b846a4a334d4be5419c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  energy: 0

@@ -8,11 +8,13 @@ public class Player : MonoBehaviour
 {
     // Visible in Editor
     public float maxHealth;
+    public float maxEnergy;
     public Transform currentCheckpoint;
-    public Slider healthSlider;
+    public Slider[] slider;
 
     // Not Visible in Editor
     [NonSerialized] public float health;
+    [NonSerialized] public float energy;
     [NonSerialized] public bool disabled;
     private SpriteRenderer spriteRenderer;
     private Animator anim;
@@ -35,32 +37,51 @@ public class Player : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
-            spriteRenderer.enabled = false;
-            disabled = true;
+            DisabledOn();
+            anim.SetBool("Dead", true);
             Invoke(nameof(Respawn), 2f);
         }
     }
 
     void Respawn()
     {
+        anim.SetBool("Dead", false);
         transform.position = currentCheckpoint.position;
-        if (!spriteRenderer.enabled)
-        {
-            spriteRenderer.enabled = true;
-        }
-        disabled = false;
+        DisabledOff();
         health = maxHealth;
+        energy = 0f;
         UpdateHealthBar(0f);
+        UpdateEnergyBar(0f);
     }
 
-    void UpdateHealthBar(float healthChange)
+    public void UpdateHealthBar(float healthChange)
     {
         health += healthChange;
         if (health > maxHealth)
         {
             health = maxHealth;
         }
-        healthSlider.value = health / maxHealth;
+        slider[0].value = health / maxHealth;
+    }
+
+    public void UpdateEnergyBar(float energyChange)
+    {
+        energy += energyChange;
+        if(energy > maxEnergy)
+        {
+            energy = maxEnergy;
+        }
+        slider[1].value = energy / maxEnergy;
+    }
+
+    public void DisabledOn()
+    {
+        disabled = true;
+    }
+
+    public void DisabledOff()
+    {
+        disabled = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -90,7 +111,8 @@ public class Player : MonoBehaviour
         }
         if (collision.CompareTag("Food"))
         {
-            UpdateHealthBar(1f);
+            UpdateHealthBar(collision.GetComponent<Food>().health);
+            UpdateEnergyBar(collision.GetComponent<Food>().energy);
             Destroy(collision.gameObject);
         }
     }

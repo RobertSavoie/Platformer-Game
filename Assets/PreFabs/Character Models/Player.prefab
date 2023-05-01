@@ -417,8 +417,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
+  maxEnergy: 3
   currentCheckpoint: {fileID: 0}
-  healthSlider: {fileID: 0}
+  slider:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &418089267170069087
 MonoBehaviour:
   m_ObjectHideFlags: 0

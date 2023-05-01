@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player.disabled) return;
+        if (player.disabled) return;
 
         rb.velocity = new(horizontal * speed, rb.velocity.y);
 
@@ -58,14 +58,18 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if(context.performed && IsGrounded())
+        if (context.performed && IsGrounded())
         {
             rb.velocity = new(rb.velocity.x, jumpingPower);
         }
-        if(context.canceled && rb.velocity.y > 0f)
+        if (context.canceled && rb.velocity.y > 0f)
         {
             rb.velocity = new(rb.velocity.x, rb.velocity.y * 0.5f);
         }
+    }
+    public void Move(InputAction.CallbackContext context)
+    {
+        horizontal = context.ReadValue<Vector2>().x;
     }
 
     private bool IsGrounded()
@@ -81,8 +85,36 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    public void Move(InputAction.CallbackContext context)
+    private void Knockback()
     {
-        horizontal = context.ReadValue<Vector2>().x;
+        if (isFacingRight)
+        {
+            KnockbackOn();
+            rb.velocity = new(-5f, jumpingPower / 3);
+        }
+        else
+        {
+            KnockbackOn();
+            rb.velocity = new(5f, jumpingPower / 3);
+        }
+    }
+    public void KnockbackOn()
+    {
+        player.disabled = true;
+        anim.SetBool("Knockback", true);
+    }
+
+    public void KnockbackOff()
+    {
+        player.disabled = false;
+        anim.SetBool("Knockback", false);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
+        {
+            Knockback();
+        }
     }
 }

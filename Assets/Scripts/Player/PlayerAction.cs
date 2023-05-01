@@ -6,33 +6,30 @@ using UnityEngine.InputSystem;
 
 public class PlayerAction : MonoBehaviour
 {
-    private Animator anim;
-    private PlayerMovement playerMovement;
-
+    // Visible In Editor
     public float attackDelay;
-    float lastAttackTime;
-    bool disabled;
-
     public GameObject swordRt;
     public GameObject swordLt;
     public GameObject shieldRt;
     public GameObject shieldLt;
 
+    // Not Visible In Editor
+    private float lastAttackTime;
+    private Animator anim;
+    private PlayerMovement playerMovement;
+    private Player player;
+
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        player = GetComponent<Player>();
         playerMovement = GetComponent<PlayerMovement>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void Attack(InputAction.CallbackContext context)
     {
+        if (player.disabled) return;
         if (context.performed && Time.time > lastAttackTime + attackDelay)
         {
             anim.SetTrigger("Attack");
@@ -42,6 +39,7 @@ public class PlayerAction : MonoBehaviour
 
     public void Block(InputAction.CallbackContext context)
     {
+        if (player.disabled) return;
         if(context.performed)
         {
             anim.SetBool("Blocking", true);
