@@ -5,16 +5,16 @@ using UnityEngine;
 public class LightEnemyScript : MonoBehaviour
 {
     // Public
-    public float speed;
     public int health;
-    public int currentPatrolPointIndex = 0;
     public GameObject player;
     public Transform[] patrolPoints;
-    public Transform currentPatrolPoint;
 
     // Private
-    SpriteRenderer spriteRenderer;
-    Animator anim;
+    private float speed;
+    private int currentPatrolPointIndex = 0;
+    private Transform currentPatrolPoint;
+    private SpriteRenderer spriteRenderer;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -65,21 +65,26 @@ public class LightEnemyScript : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("Laser"))
+        if (collision.CompareTag("Laser"))
         {
             anim.SetTrigger("Hit");
             // Destroy laser
-            Destroy(other.gameObject);
-            health -= 5;
-            Death();
+            Destroy(collision.gameObject);
+            health -= 1;
+            CheckDeath();
         }
-        if (other.CompareTag("Sword"))
+        if (collision.CompareTag("Sword"))
         {
             anim.SetTrigger("Hit");
-            health -= 5;
-            Invoke(nameof(Death), .2f);
+            health -= 1;
+            Invoke(nameof(CheckDeath), .2f);
+        }
+        if (collision.gameObject.CompareTag("FallDeath"))
+        {
+            health -= 1000;
+            CheckDeath();
         }
     }
 
@@ -99,7 +104,7 @@ public class LightEnemyScript : MonoBehaviour
         }
     }
 
-    void Death()
+    void CheckDeath()
     {
         if (health <= 0)
         {

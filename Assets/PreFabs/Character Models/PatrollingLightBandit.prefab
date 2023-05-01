@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229895315541449005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9, y: 0.4, z: 0}
+  m_LocalPosition: {x: 1.334, y: 0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229895315947793518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.4, z: 0}
+  m_LocalPosition: {x: -1.344, y: 0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90,8 +90,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5229895316409560789}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: -0.05034655, z: 9.915377}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -162,14 +162,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284b25be785222e4491a2d4136534d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  health: 20
-  currentPatrolPointIndex: 0
+  health: 2
   player: {fileID: 0}
   patrolPoints:
   - {fileID: 5229895315947793513}
   - {fileID: 5229895315541449004}
-  currentPatrolPoint: {fileID: 0}
 --- !u!95 &5229895316409560790
 Animator:
   serializedVersion: 5
