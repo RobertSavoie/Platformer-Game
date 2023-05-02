@@ -11,6 +11,7 @@ TagManager:
   - FallDeath
   - Food
   - Ladder
+  - ClimbingGloves
   layers:
   - Default
   - TransparentFX
