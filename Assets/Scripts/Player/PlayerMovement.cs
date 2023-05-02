@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody2D rb;
-    Animator anim;
-
+    // Viewable In Editor
     public float speed;
     public float jumpingPower;
-    public bool isFacingRight;
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+    // Not Viewable In Editor
+    [NonSerialized] public bool isFacingRight;
     private float horizontal;
     private Player player;
+    Rigidbody2D rb;
+    Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -45,19 +47,26 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        if (!IsGrounded())
+        if (!IsGrounded() && rb.velocity.y > 0.1)
         {
             anim.SetBool("Jumping", true);
+            anim.SetBool("Falling", false);
         }
-
-        if (IsGrounded())
+        else if(!IsGrounded() && rb.velocity.y < 0.1)
         {
             anim.SetBool("Jumping", false);
+            anim.SetBool("Falling", true);
+        }
+        else if (IsGrounded())
+        {
+            anim.SetBool("Jumping", false);
+            anim.SetBool("Falling", false);
         }
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
+        if (player.disabled) return;
         if (context.performed && IsGrounded())
         {
             rb.velocity = new(rb.velocity.x, jumpingPower);
@@ -69,6 +78,11 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Move(InputAction.CallbackContext context)
     {
+        if (player.disabled)
+        {
+            horizontal = 0f;
+            return;
+        };
         horizontal = context.ReadValue<Vector2>().x;
     }
 
@@ -98,16 +112,16 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new(5f, jumpingPower / 3);
         }
     }
+
     public void KnockbackOn()
     {
         player.disabled = true;
-        anim.SetBool("Knockback", true);
+        anim.SetTrigger("Knockback");
     }
 
     public void KnockbackOff()
     {
         player.disabled = false;
-        anim.SetBool("Knockback", false);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -115,6 +129,35 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
         {
             Knockback();
+        }
+        if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
+        {
+            player.UpdateHealthBar(-1f);
+            player.CheckDeath();
+        }
+        if (collision.gameObject.CompareTag("Enemy") && anim.GetBool("Blocking"))
+        {
+            anim.SetTrigger("BlockFlash");
+        }
+        if (collision.gameObject.CompareTag("FallDeath"))
+        {
+            player.UpdateHealthBar(-100f);
+            player.CheckDeath();
+        }
+    }
+
+    // This function will run whenever the player collides with a trigger collider
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Checkpoint"))
+        {
+            player.currentCheckpoint = collision.transform;
+        }
+        if (collision.CompareTag("Food"))
+        {
+            player.UpdateHealthBar(collision.GetComponent<Food>().health);
+            player.UpdateEnergyBar(collision.GetComponent<Food>().energy);
+            Destroy(collision.gameObject);
         }
     }
 }
