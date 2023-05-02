@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -11,23 +12,32 @@ public class Player : MonoBehaviour
     public float maxEnergy;
     public bool climbingGloves;
     public Transform currentCheckpoint;
+    public Transform startPosition;
     public Slider[] slider;
+    public GameObject gameOverPanel;
 
     // Not Visible In Editor
     [NonSerialized] public float health;
     [NonSerialized] public float energy;
     [NonSerialized] public bool disabled;
     private Animator anim;
-    private Rigidbody2D rb;
     private PlayerMovement playerMovement;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         Respawn();
+    }
+
+    private void Update()
+    {
+        if (startPosition == null)
+        {
+            startPosition = GameObject.FindGameObjectWithTag("Start").transform;
+            transform.position = startPosition.position;
+        }
     }
 
     public void Respawn()
@@ -50,7 +60,8 @@ public class Player : MonoBehaviour
             disabled = true;
             anim.SetBool("Dead", true);
             anim.SetTrigger("Death");
-            Invoke(nameof(Respawn), 2f);
+            gameOverPanel.SetActive(true);
+            //Invoke(nameof(Respawn), 2f);
         }
     }
 
@@ -67,11 +78,22 @@ public class Player : MonoBehaviour
     public void UpdateEnergyBar(float energyChange)
     {
         energy += energyChange;
-        if(energy > maxEnergy)
+        if (energy > maxEnergy)
         {
             energy = maxEnergy;
         }
         slider[1].value = energy / maxEnergy;
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit Button Clicked");
+        Application.Quit();
+    }
+
+    public void Continue()
+    {
+        SceneManager.LoadScene("Main");
     }
 
     public void DisabledOn()
@@ -87,12 +109,9 @@ public class Player : MonoBehaviour
     // This function will run whenever the player collides with a matching tagged collider
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
+        if (collision.gameObject.CompareTag("Enemy") && !disabled && !anim.GetBool("Blocking"))
         {
             playerMovement.Knockback(collision);
-        }
-        if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
-        {
             UpdateHealthBar(-1f);
             CheckDeath();
         }
@@ -124,6 +143,10 @@ public class Player : MonoBehaviour
         {
             climbingGloves = true;
             Destroy(collision.gameObject);
+        }
+        if (collision.CompareTag("Exit"))
+        {
+            SceneManager.LoadScene("Level 2");
         }
     }
 }
