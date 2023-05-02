@@ -6,13 +6,13 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    // Visible in Editor
+    // Visible In Editor
     public float maxHealth;
     public float maxEnergy;
     public Transform currentCheckpoint;
     public Slider[] slider;
 
-    // Not Visible in Editor
+    // Not Visible In Editor
     [NonSerialized] public float health;
     [NonSerialized] public float energy;
     [NonSerialized] public bool disabled;

@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class EnemyGroundPatrol : MonoBehaviour
 {
-    // Viewable in Editor
+    // Visible In Editor
     [SerializeField] private Transform[] patrolPoints;
     [SerializeField] private int currentPatrolPointIndex = 0;
 
-    // Non-Viewable in Editor
+    // Not Visible In Editor
     private Enemy enemy;
     private Transform currentPatrolPoint;
     private SpriteRenderer spriteRenderer;

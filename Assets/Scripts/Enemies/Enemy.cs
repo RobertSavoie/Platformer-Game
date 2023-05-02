@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    // Visible In Editor
     public int health;
     [NonSerialized] public float speed;
 }

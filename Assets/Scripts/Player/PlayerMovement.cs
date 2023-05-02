@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Viewable In Editor
+    // Visible In Editor
     public float speed;
     public float jumpingPower;
     public Transform groundCheck;
     public LayerMask groundLayer;
 
-    // Not Viewable In Editor
+    // Not Visible In Editor
     [NonSerialized] public bool isFacingRight;
     private float horizontal;
     private Player player;
@@ -61,6 +61,10 @@ public class PlayerMovement : MonoBehaviour
         horizontal = context.ReadValue<Vector2>().x;
     }
 
+    /// <summary>
+    /// Determines if the player is on the ground
+    /// </summary>
+    /// <returns></returns>
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
@@ -111,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
 
     /// <summary>
     /// Sets the direction the character is knocked back based on what direction
-    /// they're facing (This will need to be changed)
+    /// they're hit from
     /// </summary>
     private void Knockback(Collision2D collision)
     {
@@ -127,17 +131,25 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Disables player and triggers the knockback animation
+    /// </summary>
     public void KnockbackOn()
     {
         player.disabled = true;
         anim.SetTrigger("Knockback");
     }
 
+    /// <summary>
+    /// Re-enables player
+    /// </summary>
     public void KnockbackOff()
     {
         player.disabled = false;
     }
 
+
+    // This function will run whenever the player collides with a matching tagged collider
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))

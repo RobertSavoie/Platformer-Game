@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class EnemyHitDetection : MonoBehaviour
 {
-    // Viewable in Editor
+    // Visible In Editor
     [SerializeField] private GameObject player;
 
-    // Non-Viewable in Editor
+    // Not Visible In Editor
     private Enemy enemy;
     private Animator anim;
     private SpriteRenderer spriteRenderer;
