@@ -47,21 +47,7 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        if (!IsGrounded() && rb.velocity.y > 0.1)
-        {
-            anim.SetBool("Jumping", true);
-            anim.SetBool("Falling", false);
-        }
-        else if(!IsGrounded() && rb.velocity.y < 0.1)
-        {
-            anim.SetBool("Jumping", false);
-            anim.SetBool("Falling", true);
-        }
-        else if (IsGrounded())
-        {
-            anim.SetBool("Jumping", false);
-            anim.SetBool("Falling", false);
-        }
+        JumpAnimations();
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -97,6 +83,25 @@ public class PlayerMovement : MonoBehaviour
         Vector2 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;
+    }
+
+    private void JumpAnimations()
+    {
+        if (!IsGrounded() && rb.velocity.y > 0.1)
+        {
+            anim.SetBool("Jumping", true);
+            anim.SetBool("Falling", false);
+        }
+        else if (!IsGrounded() && rb.velocity.y < 0.1)
+        {
+            anim.SetBool("Jumping", false);
+            anim.SetBool("Falling", true);
+        }
+        else if (IsGrounded())
+        {
+            anim.SetBool("Jumping", false);
+            anim.SetBool("Falling", false);
+        }
     }
 
     private void Knockback()
