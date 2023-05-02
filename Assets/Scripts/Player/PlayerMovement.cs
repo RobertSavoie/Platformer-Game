@@ -14,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
 
     // Not Visible In Editor
     [NonSerialized] public bool isFacingRight;
-    private float horizontal;
+    [NonSerialized] public float horizontal;
+    [NonSerialized] public float vertical;
     private Player player;
     Rigidbody2D rb;
     Animator anim;
@@ -56,9 +57,11 @@ public class PlayerMovement : MonoBehaviour
         if (player.disabled)
         {
             horizontal = 0f;
+            vertical = 0f;
             return;
         };
         horizontal = context.ReadValue<Vector2>().x;
+        vertical = context.ReadValue<Vector2>().y;
     }
 
     /// <summary>
@@ -117,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
     /// Sets the direction the character is knocked back based on what direction
     /// they're hit from
     /// </summary>
-    private void Knockback(Collision2D collision)
+    public void Knockback(Collision2D collision)
     {
         if (collision.transform.position.x > transform.position.x)
         {
@@ -146,44 +149,5 @@ public class PlayerMovement : MonoBehaviour
     public void KnockbackOff()
     {
         player.disabled = false;
-    }
-
-
-    // This function will run whenever the player collides with a matching tagged collider
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
-        {
-            Knockback(collision);
-        }
-        if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
-        {
-            player.UpdateHealthBar(-1f);
-            player.CheckDeath();
-        }
-        if (collision.gameObject.CompareTag("Enemy") && anim.GetBool("Blocking"))
-        {
-            anim.SetTrigger("BlockFlash");
-        }
-        if (collision.gameObject.CompareTag("FallDeath"))
-        {
-            player.UpdateHealthBar(-100f);
-            player.CheckDeath();
-        }
-    }
-
-    // This function will run whenever the player collides with a trigger collider
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Checkpoint"))
-        {
-            player.currentCheckpoint = collision.transform;
-        }
-        if (collision.CompareTag("Food"))
-        {
-            player.UpdateHealthBar(collision.GetComponent<Food>().health);
-            player.UpdateEnergyBar(collision.GetComponent<Food>().energy);
-            Destroy(collision.gameObject);
-        }
     }
 }

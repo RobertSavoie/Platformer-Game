@@ -10,6 +10,7 @@ TagManager:
   - Checkpoint
   - FallDeath
   - Food
+  - Ladder
   layers:
   - Default
   - TransparentFX
