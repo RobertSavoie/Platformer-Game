@@ -32,21 +32,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (player.disabled) return;
-
         rb.velocity = new(horizontal * speed, rb.velocity.y);
-
         // Set the speed parameter of the animator
         anim.SetFloat("Speed", Mathf.Abs(horizontal));
-
-        if (!isFacingRight && horizontal > 0f)
-        {
-            Flip();
-        }
-        else if (isFacingRight && horizontal < 0f)
-        {
-            Flip();
-        }
-
+        Flip();
         JumpAnimations();
     }
 
@@ -77,14 +66,30 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
+    /// <summary>
+    /// Flips the character on the x axis
+    /// </summary>
     private void Flip()
     {
-        isFacingRight = !isFacingRight;
-        Vector2 localScale = transform.localScale;
-        localScale.x *= -1f;
-        transform.localScale = localScale;
+        if (!isFacingRight && horizontal > 0f)
+        {
+            isFacingRight = !isFacingRight;
+            Vector2 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+        else if (isFacingRight && horizontal < 0f)
+        {
+            isFacingRight = !isFacingRight;
+            Vector2 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
     }
 
+    /// <summary>
+    /// Determines booleans for jump and falling animations
+    /// </summary>
     private void JumpAnimations()
     {
         if (!IsGrounded() && rb.velocity.y > 0.1)
@@ -104,14 +109,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Knockback()
+    /// <summary>
+    /// Sets the direction the character is knocked back based on what direction
+    /// they're facing (This will need to be changed)
+    /// </summary>
+    private void Knockback(Collision2D collision)
     {
-        if (isFacingRight)
+        if (collision.transform.position.x > transform.position.x)
         {
             KnockbackOn();
             rb.velocity = new(-5f, jumpingPower / 3);
         }
-        else
+        else if (collision.transform.position.x < transform.position.x)
         {
             KnockbackOn();
             rb.velocity = new(5f, jumpingPower / 3);
@@ -133,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
         {
-            Knockback();
+            Knockback(collision);
         }
         if (collision.gameObject.CompareTag("Enemy") && !anim.GetBool("Blocking"))
         {
