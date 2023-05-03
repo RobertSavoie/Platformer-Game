@@ -151,7 +151,8 @@ public class Player : MonoBehaviour
         }
         if (collision.CompareTag("Exit"))
         {
-            SceneManager.LoadScene("Level 2");
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(buildIndex + 1);
         }
     }
 }
