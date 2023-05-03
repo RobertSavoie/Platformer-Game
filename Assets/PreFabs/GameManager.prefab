@@ -88,10 +88,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7132768307433137297}
   - component: {fileID: 367989724802962115}
-  - component: {fileID: 8958530518395545853}
+  - component: {fileID: 1118620895109066557}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,7 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
---- !u!114 &8958530518395545853
+  entrances: []
+  exits: []
+  bonfires: []
+--- !u!114 &1118620895109066557
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -8,10 +8,8 @@ public class PlayerAction : MonoBehaviour
 {
     // Visible In Editor
     public float attackDelay;
-    public GameObject swordRt;
-    public GameObject swordLt;
-    public GameObject shieldRt;
-    public GameObject shieldLt;
+    public GameObject swordHitBox;
+    public GameObject shieldHitBox;
 
     // Not Visible In Editor
     private float lastAttackTime;
@@ -40,12 +38,12 @@ public class PlayerAction : MonoBehaviour
     public void Block(InputAction.CallbackContext context)
     {
         if (player.disabled) return;
-        if(context.performed)
+        if (context.performed)
         {
             anim.SetBool("Blocking", true);
             ShieldBlocking();
         }
-        if(context.canceled)
+        if (context.canceled)
         {
             anim.SetBool("Blocking", false);
             ShieldBlockingDone();
@@ -54,49 +52,21 @@ public class PlayerAction : MonoBehaviour
 
     void SwordAttack()
     {
-        if (playerMovement.isFacingRight)
-        {
-            swordRt.SetActive(true);
-        }
-        else
-        {
-            swordLt.SetActive(true);
-        }
+        swordHitBox.SetActive(true);
     }
 
     void SwordAttackDone()
     {
-        if (playerMovement.isFacingRight)
-        {
-            swordRt.SetActive(false);
-        }
-        else
-        {
-            swordLt.SetActive(false);
-        }
+        swordHitBox.SetActive(false);
     }
 
     void ShieldBlocking()
     {
-        if (playerMovement.isFacingRight)
-        {
-            shieldRt.SetActive(true);
-        }
-        else
-        {
-            shieldLt.SetActive(true);
-        }
+        shieldHitBox.SetActive(true);
     }
 
     void ShieldBlockingDone()
     {
-        if (playerMovement.isFacingRight)
-        {
-            shieldRt.SetActive(false);
-        }
-        else
-        {
-            shieldLt.SetActive(false);
-        }
+        shieldHitBox.SetActive(false);
     }
 }

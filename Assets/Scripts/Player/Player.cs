@@ -13,47 +13,65 @@ public class Player : MonoBehaviour
     public float maxEnergy;
     public float energy;
     public bool climbingGloves;
-    public Transform currentCheckpoint;
-    public Transform startPosition;
     public Slider[] slider;
     public GameObject gameOverPanel;
+    public GameObject loadingPanel;
 
     // Not Visible In Editor
-    [NonSerialized] public bool disabled;
+    public bool disabled;
+    public string entranceName;
+    public string currentBonfireName;
+    public GameObject gameManager;
+    public GameObject[] bonfires;
     private Animator anim;
     private PlayerMovement playerMovement;
+    private bool loadAtEntrance;
 
     // Start is called before the first frame update
     private void Start()
     {
         anim = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
         UpdateHealthBar(maxHealth);
         UpdateEnergyBar(0f);
     }
 
     private void Update()
     {
-        if (startPosition == null)
+        if (entranceName != string.Empty && loadAtEntrance)
         {
-            startPosition = GameObject.FindGameObjectWithTag("Start").transform;
-            transform.position = startPosition.position;
+            foreach(GameObject entrance in gameManager.GetComponent<GameManager>().entrances)
+            {
+                if (entrance.name == entranceName)
+                {
+                    transform.position = entrance.transform.position;
+                }
+            }
         }
-        if (currentCheckpoint == null)
+        else
         {
-            currentCheckpoint = GameObject.FindGameObjectWithTag("Start").transform;
+            if (currentBonfireName == string.Empty)
+            {
+                currentBonfireName = GameObject.FindGameObjectWithTag("Bonfire").name;
+                transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
+            }
         }
+        entranceName = SceneManager.GetActiveScene().name;
     }
 
     public void Respawn()
     {
-        transform.position = currentCheckpoint.position;
+        loadAtEntrance = false;
+        entranceName = string.Empty;
+        transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
         disabled = false;
         anim.SetBool("Dead", false);
         health = maxHealth;
         energy = 0f;
         UpdateHealthBar(0f);
         UpdateEnergyBar(0f);
+        loadingPanel.SetActive(false);
     }
 
     public void CheckDeath()
@@ -98,7 +116,9 @@ public class Player : MonoBehaviour
     public void Continue()
     {
         gameOverPanel.SetActive(false);
-        Respawn();
+        loadingPanel.SetActive(true);
+        SceneManager.LoadScene(currentBonfireName);
+        Invoke(nameof(Respawn), 1.5f);
     }
 
     public void DisabledOn()
@@ -134,9 +154,9 @@ public class Player : MonoBehaviour
     // This function will run whenever the player collides with a trigger collider
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Checkpoint"))
+        if (collision.CompareTag("Bonfire"))
         {
-            currentCheckpoint = collision.transform;
+            currentBonfireName = collision.gameObject.name;
         }
         if (collision.CompareTag("Food"))
         {
@@ -151,8 +171,8 @@ public class Player : MonoBehaviour
         }
         if (collision.CompareTag("Exit"))
         {
-            int buildIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(buildIndex + 1);
+            loadAtEntrance = true;
+            SceneManager.LoadScene(collision.gameObject.name);
         }
     }
 }

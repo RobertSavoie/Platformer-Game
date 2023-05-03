@@ -12,8 +12,10 @@ TagManager:
   - Ladder
   - ClimbingGloves
   - Exit
-  - Start
   - CameraStop
+  - Bonfire
+  - GameManager
+  - Entrance
   layers:
   - Default
   - TransparentFX
