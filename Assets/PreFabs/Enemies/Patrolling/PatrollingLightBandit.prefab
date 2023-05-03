@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 2
+  damageToPlayer: 1
 --- !u!114 &5229895316409560787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf4326aa90b9eb04492365a212156e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3005896397490654471, guid: 17b7529a0fec67b4dadeead62e9e991d, type: 3}
+  energyGiven: 1
 --- !u!95 &5229895316409560790
 Animator:
   serializedVersion: 5

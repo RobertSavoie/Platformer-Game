@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyHitDetection : MonoBehaviour
 {
     // Visible In Editor
+    public float energyGiven;
 
     // Not Visible In Editor
     private GameObject player;
@@ -29,7 +30,7 @@ public class EnemyHitDetection : MonoBehaviour
         {
             anim.SetTrigger("Hit");
             enemy.health -= 1;
-            player.GetComponent<Player>().UpdateEnergyBar(1f);
+            player.GetComponent<Player>().UpdateEnergyBar(energyGiven);
             Invoke(nameof(CheckDeath), .2f);
         }
         if (collision.gameObject.CompareTag("FallDeath"))

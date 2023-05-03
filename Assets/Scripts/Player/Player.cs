@@ -117,7 +117,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && !disabled && !anim.GetBool("Blocking"))
         {
             playerMovement.Knockback(collision);
-            UpdateHealthBar(-1f);
+            UpdateHealthBar(collision.gameObject.GetComponent<Enemy>().damageToPlayer * - 1f);
             CheckDeath();
         }
         if (collision.gameObject.CompareTag("Enemy") && anim.GetBool("Blocking"))

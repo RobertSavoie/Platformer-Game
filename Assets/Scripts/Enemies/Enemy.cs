@@ -6,6 +6,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     // Visible In Editor
-    public int health;
+    public float health;
+    public float damageToPlayer;
     [NonSerialized] public float speed;
 }
