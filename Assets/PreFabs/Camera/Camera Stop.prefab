@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2185350648534964100}
   m_Layer: 0
   m_Name: Camera Stop
-  m_TagString: Untagged
+  m_TagString: CameraStop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.07444686, y: 0.08104581}
-      - {x: -0.07444686, y: -0.011079917}
-      - {x: 0.06076164, y: -0.01107992}
-      - {x: 0.06076164, y: 0.08104581}
+    - - {x: -17.941124, y: 4.755566}
+      - {x: -18.009186, y: -6.721751}
+      - {x: 12.905191, y: -6.5010214}
+      - {x: 12.638142, y: 5.0854816}

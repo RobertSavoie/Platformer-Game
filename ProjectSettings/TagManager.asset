@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Laser
   - Enemy
   - Sword
   - Checkpoint
@@ -14,6 +13,7 @@ TagManager:
   - ClimbingGloves
   - Exit
   - Start
+  - CameraStop
   layers:
   - Default
   - TransparentFX

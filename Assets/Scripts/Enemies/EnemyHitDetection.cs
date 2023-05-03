@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemyHitDetection : MonoBehaviour
 {
     // Visible In Editor
-    [SerializeField] private GameObject player;
 
     // Not Visible In Editor
+    private GameObject player;
     private Enemy enemy;
     private Animator anim;
     private SpriteRenderer spriteRenderer;
@@ -17,8 +17,9 @@ public class EnemyHitDetection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemy = GetComponent<Enemy>();
+        player = GameObject.FindGameObjectWithTag("Player");
         anim = GetComponent<Animator>();
+        enemy = GetComponent<Enemy>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

@@ -9,7 +9,9 @@ public class Player : MonoBehaviour
 {
     // Visible In Editor
     public float maxHealth;
+    public float health;
     public float maxEnergy;
+    public float energy;
     public bool climbingGloves;
     public Transform currentCheckpoint;
     public Transform startPosition;
@@ -17,8 +19,6 @@ public class Player : MonoBehaviour
     public GameObject gameOverPanel;
 
     // Not Visible In Editor
-    [NonSerialized] public float health;
-    [NonSerialized] public float energy;
     [NonSerialized] public bool disabled;
     private Animator anim;
     private PlayerMovement playerMovement;
@@ -28,7 +28,8 @@ public class Player : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
-        Respawn();
+        UpdateHealthBar(maxHealth);
+        UpdateEnergyBar(0f);
     }
 
     private void Update()
@@ -37,6 +38,10 @@ public class Player : MonoBehaviour
         {
             startPosition = GameObject.FindGameObjectWithTag("Start").transform;
             transform.position = startPosition.position;
+        }
+        if (currentCheckpoint == null)
+        {
+            currentCheckpoint = GameObject.FindGameObjectWithTag("Start").transform;
         }
     }
 
@@ -61,7 +66,6 @@ public class Player : MonoBehaviour
             anim.SetBool("Dead", true);
             anim.SetTrigger("Death");
             gameOverPanel.SetActive(true);
-            //Invoke(nameof(Respawn), 2f);
         }
     }
 
@@ -93,7 +97,8 @@ public class Player : MonoBehaviour
 
     public void Continue()
     {
-        SceneManager.LoadScene("Main");
+        gameOverPanel.SetActive(false);
+        Respawn();
     }
 
     public void DisabledOn()
