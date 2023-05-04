@@ -216,11 +216,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2216292962594437164, guid: 576ced109258fd447851e8f599cddecd, type: 3}
   m_PrefabInstance: {fileID: 122269702}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &122269704 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2216292962594437155, guid: 576ced109258fd447851e8f599cddecd, type: 3}
-  m_PrefabInstance: {fileID: 122269702}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &575284473
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,11 +403,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4905919058511283823, guid: 45009524a0e62524d9f640b77f47a022, type: 3}
   m_PrefabInstance: {fileID: 1325051958}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1325051960 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4905919058511283821, guid: 45009524a0e62524d9f640b77f47a022, type: 3}
-  m_PrefabInstance: {fileID: 1325051958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1569137489
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,30 +442,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 367989724802962115, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
-      propertyPath: exits.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 367989724802962115, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
-      propertyPath: bonfires.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 367989724802962115, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
-      propertyPath: exits.Array.data[0]
-      value: 
-      objectReference: {fileID: 1755936299}
-    - target: {fileID: 367989724802962115, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
-      propertyPath: entrances.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 367989724802962115, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
-      propertyPath: bonfires.Array.data[0]
-      value: 
-      objectReference: {fileID: 1325051960}
-    - target: {fileID: 367989724802962115, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
-      propertyPath: entrances.Array.data[0]
-      value: 
-      objectReference: {fileID: 122269704}
     - target: {fileID: 5424706208744940656, guid: 884d7a72a1c76a6439e7d7d8a1a9f8f5, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -590,11 +556,6 @@ PrefabInstance:
 --- !u!4 &1755936298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2579646873689760923, guid: d3abe4a4950bfee43a8d81d4d8cc6b21, type: 3}
-  m_PrefabInstance: {fileID: 1755936297}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1755936299 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2579646873689760921, guid: d3abe4a4950bfee43a8d81d4d8cc6b21, type: 3}
   m_PrefabInstance: {fileID: 1755936297}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1774101843

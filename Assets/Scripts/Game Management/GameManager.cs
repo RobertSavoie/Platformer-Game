@@ -20,10 +20,7 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Main Menu"))
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            entrances = GameObject.FindGameObjectsWithTag("Entrance");
-            exits = GameObject.FindGameObjectsWithTag("Exit");
-            bonfires = GameObject.FindGameObjectsWithTag("Bonfire");
+            SetGameObjects();
         }
     }
 
@@ -31,10 +28,7 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Main Menu"))
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            entrances = GameObject.FindGameObjectsWithTag("Entrance");
-            exits = GameObject.FindGameObjectsWithTag("Exit");
-            bonfires = GameObject.FindGameObjectsWithTag("Bonfire");
+            SetGameObjects();
         }
     }
 
@@ -48,5 +42,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Quit Button Clicked");
         Application.Quit();
+    }
+
+    public void SetGameObjects()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        entrances = GameObject.FindGameObjectsWithTag("Entrance");
+        exits = GameObject.FindGameObjectsWithTag("Exit");
+        bonfires = GameObject.FindGameObjectsWithTag("Bonfire");
     }
 }

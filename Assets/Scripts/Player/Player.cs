@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
                 transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
             }
         }
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
         entranceName = SceneManager.GetActiveScene().name;
     }
 
@@ -71,7 +72,7 @@ public class Player : MonoBehaviour
         energy = 0f;
         UpdateHealthBar(0f);
         UpdateEnergyBar(0f);
-        loadingPanel.SetActive(false);
+        Invoke(nameof(TurnOffLoadingPanel), 1f);
     }
 
     public void CheckDeath()
@@ -129,6 +130,11 @@ public class Player : MonoBehaviour
     public void DisabledOff()
     {
         disabled = false;
+    }
+
+    public void TurnOffLoadingPanel()
+    {
+        loadingPanel.SetActive(false);
     }
 
     // This function will run whenever the player collides with a matching tagged collider
