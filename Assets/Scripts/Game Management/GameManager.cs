@@ -14,10 +14,14 @@ public class GameManager : MonoBehaviour
     public GameObject[] bonfires;
 
     // Not Visible In Editor
+    private string bonfire;
+    private int climbingGloves;
 
     // Start is called before the first frame update
     private void Start()
     {
+        bonfire = PlayerPrefs.GetString("BONFIRE");
+        climbingGloves = PlayerPrefs.GetInt("CLIMBING_GLOVES");
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Main Menu"))
         {
             SetGameObjects();
@@ -35,7 +39,18 @@ public class GameManager : MonoBehaviour
     public void LoadGame()
     {
         player.SetActive(true);
-        SceneManager.LoadScene("Main");
+        if(climbingGloves == 1)
+        {
+            player.GetComponent<Player>().climbingGloves = true;
+        }
+        if (bonfire != string.Empty)
+        {
+            SceneManager.LoadScene(bonfire);
+        }
+        else
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 
     public void QuitGame()

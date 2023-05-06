@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     // Not Visible In Editor
     public bool disabled;
-    public string entranceName;
+    public string sceneName;
     public string currentBonfireName;
     public GameObject gameManager;
     public GameObject[] bonfires;
@@ -39,11 +39,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (entranceName != string.Empty && loadAtEntrance)
+        if (sceneName != string.Empty && loadAtEntrance)
         {
             foreach(GameObject entrance in gameManager.GetComponent<GameManager>().entrances)
             {
-                if (entrance.name == entranceName)
+                if (entrance.name == sceneName)
                 {
                     transform.position = entrance.transform.position;
                 }
@@ -58,13 +58,13 @@ public class Player : MonoBehaviour
             }
         }
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        entranceName = SceneManager.GetActiveScene().name;
+        sceneName = SceneManager.GetActiveScene().name;
     }
 
     public void Respawn()
     {
         loadAtEntrance = false;
-        entranceName = string.Empty;
+        sceneName = string.Empty;
         transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
         disabled = false;
         anim.SetBool("Dead", false);
@@ -163,6 +163,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Bonfire"))
         {
             currentBonfireName = collision.gameObject.name;
+            PlayerPrefs.SetString("BONFIRE", collision.gameObject.name);
         }
         if (collision.CompareTag("Food"))
         {
@@ -173,6 +174,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("ClimbingGloves"))
         {
             climbingGloves = true;
+            PlayerPrefs.SetInt("CLIMBING_GLOVES", 1);
             Destroy(collision.gameObject);
         }
         if (collision.CompareTag("Exit"))
