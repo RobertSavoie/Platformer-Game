@@ -143,7 +143,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && !disabled && !anim.GetBool("Blocking"))
         {
             playerMovement.Knockback(collision);
-            UpdateHealthBar(collision.gameObject.GetComponent<Enemy>().damageToPlayer * - 1f);
+            UpdateHealthBar(collision.gameObject.GetComponent<Enemy>().damageToPlayer * -1f);
             CheckDeath();
         }
         if (collision.gameObject.CompareTag("Enemy") && anim.GetBool("Blocking"))
@@ -180,6 +180,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Exit"))
         {
             loadAtEntrance = true;
+            Debug.Log("Moving to " + collision.gameObject.name);
             SceneManager.LoadScene(collision.gameObject.name);
         }
     }
