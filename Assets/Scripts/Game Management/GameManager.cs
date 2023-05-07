@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -12,14 +13,20 @@ public class GameManager : MonoBehaviour
     public GameObject[] entrances;
     public GameObject[] exits;
     public GameObject[] bonfires;
+    public Slider[] sliders;
+    public GameObject youDiedMenu;
+    public GameObject loadingScreen;
+    public GameObject deathLoadingScreen;
 
     // Not Visible In Editor
-    private string bonfire;
-    private int climbingGloves;
+    public Player playerScript;
+    public string bonfire;
+    public int climbingGloves;
 
     // Start is called before the first frame update
     private void Start()
     {
+        playerScript = GetComponent<Player>();
         bonfire = PlayerPrefs.GetString("BONFIRE");
         climbingGloves = PlayerPrefs.GetInt("CLIMBING_GLOVES");
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Main Menu"))
@@ -39,18 +46,36 @@ public class GameManager : MonoBehaviour
     public void LoadGame()
     {
         player.SetActive(true);
-        if(climbingGloves == 1)
+        playerScript = player.GetComponent<Player>();
+
+        foreach (Slider slider in sliders)
         {
-            player.GetComponent<Player>().climbingGloves = true;
+            slider.gameObject.SetActive(true);
         }
+
+        SetWorldState();
+
         if (bonfire != string.Empty)
         {
             SceneManager.LoadScene(bonfire);
+            ToggleLoadingScreen();
+            Invoke(nameof(ToggleLoadingScreen), 2f);
         }
         else
         {
             SceneManager.LoadScene("Main");
+            ToggleLoadingScreen();
+            Invoke(nameof(ToggleLoadingScreen), 2f);
         }
+
+    }
+
+    public void Continue()
+    {
+        ToggleYouDiedMenu();
+        ToggleDeathLoadingScreen();
+        SceneManager.LoadScene(PlayerPrefs.GetString("BONFIRE"));
+        playerScript.Invoke(nameof(playerScript.Respawn), 1.5f);
     }
 
     public void QuitGame()
@@ -65,5 +90,62 @@ public class GameManager : MonoBehaviour
         entrances = GameObject.FindGameObjectsWithTag("Entrance");
         exits = GameObject.FindGameObjectsWithTag("Exit");
         bonfires = GameObject.FindGameObjectsWithTag("Bonfire");
+    }
+
+    public void ToggleYouDiedMenu()
+    {
+        if (youDiedMenu.activeSelf)
+        {
+            youDiedMenu.SetActive(false);
+        }
+        else
+        {
+            youDiedMenu.SetActive(true);
+        }
+    }
+
+    public void ToggleDeathLoadingScreen()
+    {
+        if (deathLoadingScreen.activeSelf)
+        {
+            deathLoadingScreen.SetActive(false);
+            playerScript.DisabledOff();
+        }
+        else
+        {
+            deathLoadingScreen.SetActive(true);
+            playerScript.DisabledOn();
+        }
+    }
+
+    public void ToggleLoadingScreen()
+    {
+        if (loadingScreen.activeSelf)
+        {
+            player.GetComponent<CapsuleCollider2D>().enabled = true;
+            player.GetComponent<Rigidbody2D>().gravityScale = 2;
+            loadingScreen.SetActive(false);
+            playerScript.DisabledOff();
+        }
+        else
+        {
+            playerScript.DisabledOn();
+            player.GetComponent<Rigidbody2D>().gravityScale = 0;
+            player.GetComponent<CapsuleCollider2D>().enabled = false;
+            loadingScreen.SetActive(true);
+        }
+    }
+
+    public void SetWorldState()
+    {
+        SetUpgrades();
+    }
+
+    public void SetUpgrades()
+    {
+        if (climbingGloves == 1)
+        {
+            player.GetComponent<Player>().climbingGloves = true;
+        }
     }
 }

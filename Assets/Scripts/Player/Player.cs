@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
@@ -13,16 +12,15 @@ public class Player : MonoBehaviour
     public float maxEnergy;
     public float energy;
     public bool climbingGloves;
-    public Slider[] slider;
-    public GameObject gameOverPanel;
-    public GameObject loadingPanel;
 
     // Not Visible In Editor
     public bool disabled;
     public string sceneName;
     public string currentBonfireName;
     public GameObject gameManager;
+    public GameManager gm;
     public GameObject[] bonfires;
+    public Rigidbody2D rb;
     private Animator anim;
     private PlayerMovement playerMovement;
     private bool loadAtEntrance;
@@ -30,9 +28,11 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        gm = gameManager.GetComponent<GameManager>();
         UpdateHealthBar(maxHealth);
         UpdateEnergyBar(0f);
     }
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     {
         if (sceneName != string.Empty && loadAtEntrance)
         {
-            foreach(GameObject entrance in gameManager.GetComponent<GameManager>().entrances)
+            foreach (GameObject entrance in gameManager.GetComponent<GameManager>().entrances)
             {
                 if (entrance.name == sceneName)
                 {
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
         energy = 0f;
         UpdateHealthBar(0f);
         UpdateEnergyBar(0f);
-        Invoke(nameof(TurnOffLoadingPanel), 1f);
+        gm.Invoke(nameof(gm.ToggleDeathLoadingScreen), 1f);
     }
 
     public void CheckDeath()
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
             disabled = true;
             anim.SetBool("Dead", true);
             anim.SetTrigger("Death");
-            gameOverPanel.SetActive(true);
+            gm.ToggleYouDiedMenu();
         }
     }
 
@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         {
             health = maxHealth;
         }
-        slider[0].value = health / maxHealth;
+        gm.sliders[0].value = health / maxHealth;
     }
 
     public void UpdateEnergyBar(float energyChange)
@@ -105,21 +105,7 @@ public class Player : MonoBehaviour
         {
             energy = maxEnergy;
         }
-        slider[1].value = energy / maxEnergy;
-    }
-
-    public void QuitGame()
-    {
-        Debug.Log("Quit Button Clicked");
-        Application.Quit();
-    }
-
-    public void Continue()
-    {
-        gameOverPanel.SetActive(false);
-        loadingPanel.SetActive(true);
-        SceneManager.LoadScene(currentBonfireName);
-        Invoke(nameof(Respawn), 1.5f);
+        gm.sliders[1].value = energy / maxEnergy;
     }
 
     public void DisabledOn()
@@ -130,12 +116,7 @@ public class Player : MonoBehaviour
     public void DisabledOff()
     {
         disabled = false;
-    }
-
-    public void TurnOffLoadingPanel()
-    {
-        loadingPanel.SetActive(false);
-    }
+    }    
 
     // This function will run whenever the player collides with a matching tagged collider
     void OnCollisionEnter2D(Collision2D collision)
@@ -180,8 +161,14 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Exit"))
         {
             loadAtEntrance = true;
-            Debug.Log("Moving to " + collision.gameObject.name);
+
+            GetComponent<PlayerMovement>().StopMovement();
+
+            gm.ToggleLoadingScreen();
+
             SceneManager.LoadScene(collision.gameObject.name);
+
+            gm.Invoke(nameof(gm.ToggleLoadingScreen), 1f);
         }
     }
 }

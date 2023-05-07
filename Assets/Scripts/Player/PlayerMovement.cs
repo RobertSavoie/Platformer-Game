@@ -150,4 +150,12 @@ public class PlayerMovement : MonoBehaviour
     {
         player.disabled = false;
     }
+
+    public void StopMovement()
+    {
+        horizontal = 0f;
+        vertical = 0f;
+        anim.SetFloat("Speed", Mathf.Abs(0));
+        rb.velocity = new(0, 0);
+    }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7522764231453612767}
   - component: {fileID: 7522764231453612766}
   m_Layer: 5
-  m_Name: You Died Panel
+  m_Name: You Died Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

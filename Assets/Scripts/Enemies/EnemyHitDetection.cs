@@ -33,6 +33,10 @@ public class EnemyHitDetection : MonoBehaviour
             player.GetComponent<Player>().UpdateEnergyBar(energyGiven);
             Invoke(nameof(CheckDeath), .2f);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         if (collision.gameObject.CompareTag("FallDeath"))
         {
             enemy.health -= 1000;

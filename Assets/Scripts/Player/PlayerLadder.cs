@@ -7,6 +7,7 @@ public class PlayerLadder : MonoBehaviour
     // Visible In Editor
     public bool isLadder;
     public bool isClimbing;
+    public bool leftLadder = false;
 
     // Not Visible In Editor
     private Rigidbody2D rb;
@@ -37,9 +38,10 @@ public class PlayerLadder : MonoBehaviour
             rb.gravityScale = 0;
             rb.velocity = new(rb.velocity.x, playerMovement.vertical * playerMovement.speed);
         }
-        else
+        else if(!isClimbing && leftLadder)
         {
             rb.gravityScale = 2;
+            leftLadder = false;
         }
     }
 
@@ -57,6 +59,7 @@ public class PlayerLadder : MonoBehaviour
         {
             isLadder = false;
             isClimbing = false;
+            leftLadder = true;
         }
     }
 }
