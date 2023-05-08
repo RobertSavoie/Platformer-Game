@@ -1,26 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ClimbingGloves : MonoBehaviour
 {
     // Not Visible In Editor
     private GameObject player;
+    [NonSerialized] public Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        anim = GetComponent<Animator>();
         if (player.GetComponent<Player>().climbingGloves)
         {
-            Destroy(gameObject);
+            anim.SetTrigger("PlayerTouch");
+            GetComponent<BoxCollider2D>().enabled = false;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

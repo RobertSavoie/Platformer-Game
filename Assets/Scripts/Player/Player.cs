@@ -155,7 +155,8 @@ public class Player : MonoBehaviour
         {
             climbingGloves = true;
             PlayerPrefs.SetInt("CLIMBING_GLOVES", 1);
-            Destroy(collision.gameObject);
+            collision.GetComponent<ClimbingGloves>().anim.SetTrigger("PlayerTouch");
+            collision.GetComponent<BoxCollider2D>().enabled = false;
         }
         if (collision.CompareTag("Exit"))
         {

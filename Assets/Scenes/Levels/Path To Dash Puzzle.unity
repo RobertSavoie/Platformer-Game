@@ -318,7 +318,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2579646873689760921, guid: d3abe4a4950bfee43a8d81d4d8cc6b21, type: 3}
       propertyPath: m_Name
-      value: Main
+      value: Climbing Gloves Room
       objectReference: {fileID: 0}
     - target: {fileID: 2579646873689760921, guid: d3abe4a4950bfee43a8d81d4d8cc6b21, type: 3}
       propertyPath: m_IsActive
@@ -1806,7 +1806,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2216292962594437155, guid: 576ced109258fd447851e8f599cddecd, type: 3}
       propertyPath: m_Name
-      value: Main
+      value: Climbing Gloves Room
       objectReference: {fileID: 0}
     - target: {fileID: 2216292962594437164, guid: 576ced109258fd447851e8f599cddecd, type: 3}
       propertyPath: m_RootOrder

@@ -440,9 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89546c9150786a8479e39b7f15670971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLadder: 0
-  isClimbing: 0
-  leftLadder: 0
 --- !u!114 &7435817581897680525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,7 +486,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: fd68a7787cb6ae649b8bb5fc2fbfa0c4, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &3005896397490654467
 CapsuleCollider2D:
