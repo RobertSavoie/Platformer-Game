@@ -1028,7 +1028,7 @@ GameObject:
   - component: {fileID: 8234130998018171544}
   - component: {fileID: 8234130998018171547}
   m_Layer: 0
-  m_Name: Level 2 Grid
+  m_Name: Path to Dash Puzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("Climbing Gloves Room");
+            SceneManager.LoadScene("Beginning");
             ToggleLoadingScreen();
             Invoke(nameof(ToggleLoadingScreen), 2f);
         }

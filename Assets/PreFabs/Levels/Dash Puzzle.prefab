@@ -1355,7 +1355,7 @@ GameObject:
   - component: {fileID: 8287745365556171050}
   - component: {fileID: 8287745365556171049}
   m_Layer: 0
-  m_Name: Level 3 Grid
+  m_Name: Dash Puzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
