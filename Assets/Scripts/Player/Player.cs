@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     // Not Visible In Editor
     [NonSerialized] public bool disabled;
     private string sceneName;
-    private string currentBonfireName = string.Empty;
+    private string currentBonfireName;
     private GameObject gameManager;
     private GameManager gm;
     private Rigidbody2D rb;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         gm = gameManager.GetComponent<GameManager>();
-        Debug.Log(currentBonfireName);
+        currentBonfireName = string.Empty;
         UpdateHealthBar(maxHealth);
         UpdateEnergyBar(0f);
     }

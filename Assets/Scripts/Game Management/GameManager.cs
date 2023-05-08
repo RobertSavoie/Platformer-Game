@@ -7,15 +7,15 @@ public class GameManager : MonoBehaviour
 {
     // Visislbe In Editor
     public GameObject player;
-    public GameObject[] entrances;
-    public GameObject[] exits;
-    public GameObject[] bonfires;
     public GameObject youDiedMenu;
     public GameObject loadingScreen;
     public GameObject deathLoadingScreen;
     public Slider[] sliders;
 
     // Not Visible In Editor
+    [NonSerialized] public GameObject[] entrances;
+    [NonSerialized] public GameObject[] exits;
+    [NonSerialized] public GameObject[] bonfires;
     private string bonfire;
     private int climbingGloves;
     private int jumpBoots;
