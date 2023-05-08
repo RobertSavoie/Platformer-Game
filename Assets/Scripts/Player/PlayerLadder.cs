@@ -1,49 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerLadder : MonoBehaviour
 {
     // Visible In Editor
-    public bool isLadder;
-    public bool isClimbing;
-    public bool leftLadder = false;
-
-    // Not Visible In Editor
-    private Rigidbody2D rb;
-    private Player player;
-    private PlayerMovement playerMovement;
-
-    // Start is called before the first frame update
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        player = GetComponent<Player>();
-        playerMovement = GetComponent<PlayerMovement>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(isLadder && Mathf.Abs(playerMovement.vertical) > 0 && player.climbingGloves)
-        {
-            isClimbing = true;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if(isClimbing)
-        {
-            rb.gravityScale = 0;
-            rb.velocity = new(rb.velocity.x, playerMovement.vertical * playerMovement.speed);
-        }
-        else if(!isClimbing && leftLadder)
-        {
-            rb.gravityScale = 2;
-            leftLadder = false;
-        }
-    }
+    [NonSerialized] public bool isLadder;
+    [NonSerialized] public bool isClimbing;
+    [NonSerialized] public bool leftLadder;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

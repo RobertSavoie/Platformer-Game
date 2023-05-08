@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,42 +14,95 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized] public bool isFacingRight;
     [NonSerialized] public float horizontal;
     [NonSerialized] public float vertical;
+    private bool doubleJump;
     private Player player;
-    Rigidbody2D rb;
-    Animator anim;
+    private PlayerLadder ladder;
+    private PlayerDash dash;
+    private Rigidbody2D rb;
+    private Animator anim;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         isFacingRight = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         player = GetComponent<Player>();
+        ladder = GetComponent<PlayerLadder>();
+        dash = GetComponent<PlayerDash>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (player.disabled) return;
-        rb.velocity = new(horizontal * speed, rb.velocity.y);
-        // Set the speed parameter of the animator
-        anim.SetFloat("Speed", Mathf.Abs(horizontal));
+        if (dash.isDashing) return;
+
         Flip();
         JumpAnimations();
+        if (ladder.isLadder && Mathf.Abs(vertical) > 0 && player.climbingGloves)
+        {
+            ladder.isClimbing = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (dash.isDashing) return;
+
+        rb.velocity = new(horizontal * speed, rb.velocity.y);
+        if (ladder.isClimbing)
+        {
+            rb.gravityScale = 0;
+            rb.velocity = new(rb.velocity.x, vertical * speed);
+        }
+        else if (!ladder.isClimbing && ladder.leftLadder)
+        {
+            rb.gravityScale = 2;
+            ladder.leftLadder = false;
+        }
+        else
+        {
+            anim.SetFloat("Speed", Mathf.Abs(horizontal));
+        }
+
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
         if (player.disabled) return;
-        if (context.performed && IsGrounded())
+
+        if (!context.performed && IsGrounded())
         {
-            rb.velocity = new(rb.velocity.x, jumpingPower);
+            doubleJump = false;
         }
+
+        if (context.performed)
+        {
+            if (player.jumpBoots)
+            {
+                if (IsGrounded() || doubleJump)
+                {
+                    rb.velocity = new(rb.velocity.x, jumpingPower);
+
+                    doubleJump = !doubleJump;
+                }
+            }
+            else
+            {
+                if (IsGrounded())
+                {
+                    rb.velocity = new(rb.velocity.x, jumpingPower);
+                }
+            }
+        }
+
         if (context.canceled && rb.velocity.y > 0f)
         {
             rb.velocity = new(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
+
     public void Move(InputAction.CallbackContext context)
     {
         if (player.disabled)
@@ -62,6 +113,19 @@ public class PlayerMovement : MonoBehaviour
         };
         horizontal = context.ReadValue<Vector2>().x;
         vertical = context.ReadValue<Vector2>().y;
+    }
+
+    public void Dash(InputAction.CallbackContext context)
+    {
+        if (player.disabled) return;
+
+        if (player.dashCloak)
+        {
+            if (context.performed && dash.canDash)
+            {
+                StartCoroutine(dash.Dash());
+            }
+        }
     }
 
     /// <summary>

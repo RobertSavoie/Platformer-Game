@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,16 +9,19 @@ public class Player : MonoBehaviour
     public float health;
     public float maxEnergy;
     public float energy;
+
+    // Upgrades
     public bool climbingGloves;
+    public bool jumpBoots;
+    public bool dashCloak;
 
     // Not Visible In Editor
-    public bool disabled;
-    public string sceneName;
-    public string currentBonfireName;
-    public GameObject gameManager;
-    public GameManager gm;
-    public GameObject[] bonfires;
-    public Rigidbody2D rb;
+    [NonSerialized] public bool disabled;
+    private string sceneName;
+    private string currentBonfireName = string.Empty;
+    private GameObject gameManager;
+    private GameManager gm;
+    private Rigidbody2D rb;
     private Animator anim;
     private PlayerMovement playerMovement;
     private bool loadAtEntrance;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         gm = gameManager.GetComponent<GameManager>();
+        Debug.Log(currentBonfireName);
         UpdateHealthBar(maxHealth);
         UpdateEnergyBar(0f);
     }
@@ -49,13 +51,10 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        else
+        else if (currentBonfireName == string.Empty)
         {
-            if (currentBonfireName == string.Empty)
-            {
-                currentBonfireName = GameObject.FindGameObjectWithTag("Bonfire").name;
-                transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
-            }
+            currentBonfireName = GameObject.FindGameObjectWithTag("Bonfire").name;
+            transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
         }
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         sceneName = SceneManager.GetActiveScene().name;
@@ -116,7 +115,7 @@ public class Player : MonoBehaviour
     public void DisabledOff()
     {
         disabled = false;
-    }    
+    }
 
     // This function will run whenever the player collides with a matching tagged collider
     void OnCollisionEnter2D(Collision2D collision)

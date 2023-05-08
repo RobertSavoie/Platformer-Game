@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -13,15 +10,17 @@ public class GameManager : MonoBehaviour
     public GameObject[] entrances;
     public GameObject[] exits;
     public GameObject[] bonfires;
-    public Slider[] sliders;
     public GameObject youDiedMenu;
     public GameObject loadingScreen;
     public GameObject deathLoadingScreen;
+    public Slider[] sliders;
 
     // Not Visible In Editor
-    public Player playerScript;
-    public string bonfire;
-    public int climbingGloves;
+    private string bonfire;
+    private int climbingGloves;
+    private int jumpBoots;
+    private int dashCloak;
+    private Player playerScript;
 
     // Start is called before the first frame update
     private void Start()
@@ -29,6 +28,8 @@ public class GameManager : MonoBehaviour
         playerScript = GetComponent<Player>();
         bonfire = PlayerPrefs.GetString("BONFIRE");
         climbingGloves = PlayerPrefs.GetInt("CLIMBING_GLOVES");
+        jumpBoots = PlayerPrefs.GetInt("JUMP_BOOTS");
+        dashCloak = PlayerPrefs.GetInt("DASH_CLOAK");
         if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Main Menu"))
         {
             SetGameObjects();
