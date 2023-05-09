@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3005896397490654468}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &863426360
 BoxCollider2D:
@@ -88,7 +88,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3005896397490654468}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &2042746429
 TrailRenderer:
@@ -229,6 +229,37 @@ Transform:
   m_Father: {fileID: 3005896397490654468}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1857300668880568269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5158066672286303298}
+  m_Layer: 0
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5158066672286303298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857300668880568269}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.229, y: 0.784, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3005896397490654468}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2136181726682690132
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +290,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3005896397490654468}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &8213089483193669031
 BoxCollider2D:
@@ -372,6 +403,7 @@ Transform:
   m_Children:
   - {fileID: 3005896395791985488}
   - {fileID: 4491203652072269877}
+  - {fileID: 5158066672286303298}
   - {fileID: 8372963056648724101}
   - {fileID: 863426359}
   - {fileID: 2042746428}
@@ -397,6 +429,7 @@ MonoBehaviour:
   climbingGloves: 0
   jumpBoots: 0
   dashCloak: 0
+  wallHook: 0
 --- !u!114 &418089267170069087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,6 +448,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallCheck: {fileID: 5158066672286303298}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!114 &6833187675071836265
 MonoBehaviour:
   m_ObjectHideFlags: 0

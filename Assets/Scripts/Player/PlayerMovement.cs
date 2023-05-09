@@ -5,16 +5,50 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     // Visible In Editor
+    // Regular Movement
     public float speed;
+
+    // Jumping
     public float jumpingPower;
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+    // Wall Jumping
+    public Transform wallCheck;
+    public LayerMask wallLayer;
+
     // Not Visible In Editor
+    // Regular Movement
     [NonSerialized] public bool isFacingRight;
     [NonSerialized] public float horizontal;
+
+    // Jump
     [NonSerialized] public float vertical;
+
+    // Coyote Time
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+
+    // Jump Buffering
+    private float jumpBufferTime = 0.2f;
+    private float jumpBufferCounter;
+
+    // Double Jump
     private bool doubleJump;
+
+    // Wall Slide
+    private bool isWallSliding;
+    private float wallSlidingSpeed = 2f;
+
+    // Wall Jump
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    private float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower;
+
+    // Componenets
     private Player player;
     private PlayerLadder ladder;
     private PlayerDash dash;
@@ -25,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         isFacingRight = true;
+        wallJumpingPower = new(speed, jumpingPower);
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         player = GetComponent<Player>();
@@ -35,22 +70,45 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (player.disabled) return;
-        if (dash.isDashing) return;
+        if (player.disabled || dash.isDashing) return;
 
-        Flip();
         JumpAnimations();
+
+        if (IsGrounded())
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
         if (ladder.isLadder && Mathf.Abs(vertical) > 0 && player.climbingGloves)
         {
             ladder.isClimbing = true;
+        }
+
+        if (player.wallHook)
+        {
+            WallSlide();
+            WallJump();
+        }
+
+        if (!isWallJumping)
+        {
+            Flip();
         }
     }
 
     private void FixedUpdate()
     {
-        if (dash.isDashing) return;
+        if (player.disabled || dash.isDashing) return;
 
-        rb.velocity = new(horizontal * speed, rb.velocity.y);
+        if (!isWallJumping)
+        {
+            rb.velocity = new(horizontal * speed, rb.velocity.y);
+        }
+
         if (ladder.isClimbing)
         {
             rb.gravityScale = 0;
@@ -65,47 +123,87 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetFloat("Speed", Mathf.Abs(horizontal));
         }
-
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (player.disabled) return;
+        if (player.disabled || dash.isDashing) return;
 
+        // Set double jump to false if jump button not pressed and character on the ground
         if (!context.performed && IsGrounded())
         {
             doubleJump = false;
         }
 
+        // Jump buffer check
         if (context.performed)
         {
-            if (player.jumpBoots)
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+
+        // Jump behaviours
+        if (jumpBufferCounter > 0)
+        {
+            // Regular Jump
+            if (!player.jumpBoots)
             {
-                if (IsGrounded() || doubleJump)
+                if (coyoteTimeCounter > 0)
                 {
                     rb.velocity = new(rb.velocity.x, jumpingPower);
-
+                    jumpBufferCounter = 0f;
+                }
+            }
+            // Double Jump
+            else
+            {
+                if (coyoteTimeCounter > 0 || doubleJump)
+                {
+                    rb.velocity = new(rb.velocity.x, jumpingPower);
+                    jumpBufferCounter = 0f;
                     doubleJump = !doubleJump;
                 }
             }
-            else
+
+            // Wall Jumping
+            if (wallJumpingCounter > 0)
             {
-                if (IsGrounded())
+                isWallJumping = true;
+                rb.velocity = new(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+                jumpBufferCounter = 0f;
+                wallJumpingCounter = 0f;
+
+                if (player.jumpBoots)
                 {
-                    rb.velocity = new(rb.velocity.x, jumpingPower);
+                    doubleJump = !doubleJump;
                 }
+
+                if (transform.localScale.x != wallJumpingDirection)
+                {
+                    isFacingRight = !isFacingRight;
+                    Vector3 localScale = transform.localScale;
+                    localScale.x *= -1f;
+                    transform.localScale = localScale;
+                }
+
+                Invoke(nameof(StopWallJumping), wallJumpingDuration);
             }
         }
 
+        // Causes jump to be short if button not held
         if (context.canceled && rb.velocity.y > 0f)
         {
             rb.velocity = new(rb.velocity.x, rb.velocity.y * 0.5f);
+            coyoteTimeCounter = 0f;
         }
     }
 
     public void Move(InputAction.CallbackContext context)
     {
-        if (player.disabled)
+        if (player.disabled || dash.isDashing)
         {
             horizontal = 0f;
             vertical = 0f;
@@ -117,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
-        if (player.disabled) return;
+        if (player.disabled || dash.isDashing) return;
 
         if (player.dashCloak)
         {
@@ -126,6 +224,58 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(dash.Dash());
             }
         }
+    }
+
+    /// <summary>
+    /// Determines if player is on a wall
+    /// </summary>
+    /// <returns>boolean</returns>
+    private bool IsWalled()
+    {
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+    }
+
+    /// <summary>
+    /// Makes it so the player slides down the wall while attached to a wall and not jumping
+    /// </summary>
+    private void WallSlide()
+    {
+        if (IsWalled() && !IsGrounded() && horizontal != 0f)
+        {
+            isWallSliding = true;
+            rb.velocity = new(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+    }
+
+    /// <summary>
+    /// Allows player to jump off wall
+    /// </summary>
+    private void WallJump()
+    {
+        if (isWallSliding)
+        {
+            isWallJumping = false;
+            wallJumpingDirection = -transform.localScale.x;
+            wallJumpingCounter = wallJumpingTime;
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Stops wall jumping
+    /// </summary>
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
     }
 
     /// <summary>
@@ -215,6 +365,9 @@ public class PlayerMovement : MonoBehaviour
         player.disabled = false;
     }
 
+    /// <summary>
+    /// Stops all movement and turns off walking animation
+    /// </summary>
     public void StopMovement()
     {
         horizontal = 0f;

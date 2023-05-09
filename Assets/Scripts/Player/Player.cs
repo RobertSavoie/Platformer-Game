@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public bool climbingGloves;
     public bool jumpBoots;
     public bool dashCloak;
+    public bool wallHook;
 
     // Not Visible In Editor
     [NonSerialized] public bool disabled;
