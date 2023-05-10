@@ -85,8 +85,16 @@ public class Player : MonoBehaviour
             anim.SetBool("Dead", true);
             anim.SetTrigger("Death");
             gm.ToggleYouDiedScreen();
-            gm.Invoke(nameof(gm.Continue), 1f);
+            Invoke(nameof(DeathScreen), 1f);
         }
+    }
+
+    public void DeathScreen()
+    {
+        gm.ToggleYouDiedScreen();
+        gm.ToggleDeathLoadingScreen();
+        SceneManager.LoadScene(PlayerPrefs.GetString("BONFIRE"));
+        Invoke(nameof(Respawn), 1.5f);
     }
 
     public void UpdateHealthBar(float healthChange)

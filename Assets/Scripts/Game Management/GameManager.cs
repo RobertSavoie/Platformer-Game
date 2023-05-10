@@ -71,14 +71,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void Continue()
-    {
-        ToggleYouDiedScreen();
-        ToggleDeathLoadingScreen();
-        SceneManager.LoadScene(PlayerPrefs.GetString("BONFIRE"));
-        playerScript.Invoke(nameof(playerScript.Respawn), 1.5f);
-    }
-
     public void QuitGame()
     {
         Debug.Log("Quit Button Clicked");
