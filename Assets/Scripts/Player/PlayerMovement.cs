@@ -26,11 +26,11 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized] public float vertical;
 
     // Coyote Time
-    private float coyoteTime = 0.2f;
+    private readonly float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
 
     // Jump Buffering
-    private float jumpBufferTime = 0.2f;
+    private readonly float jumpBufferTime = 0.2f;
     private float jumpBufferCounter;
 
     // Double Jump
@@ -38,14 +38,14 @@ public class PlayerMovement : MonoBehaviour
 
     // Wall Slide
     private bool isWallSliding;
-    private float wallSlidingSpeed = 2f;
+    private readonly float wallSlidingSpeed = 2f;
 
     // Wall Jump
     private bool isWallJumping;
     private float wallJumpingDirection;
-    private float wallJumpingTime = 0.2f;
+    private readonly float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
-    private float wallJumpingDuration = 0.4f;
+    private readonly float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower;
 
     // Componenets
@@ -100,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // FixedUpdate is called every fixed framerate frame
     private void FixedUpdate()
     {
         if (player.disabled || dash.isDashing) return;

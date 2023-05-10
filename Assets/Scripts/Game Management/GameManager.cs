@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     // Visislbe In Editor
     public GameObject player;
-    public GameObject youDiedMenu;
+    public GameObject youDiedScreen;
     public GameObject loadingScreen;
     public GameObject deathLoadingScreen;
     public Slider[] sliders;
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
     public void Continue()
     {
-        ToggleYouDiedMenu();
+        ToggleYouDiedScreen();
         ToggleDeathLoadingScreen();
         SceneManager.LoadScene(PlayerPrefs.GetString("BONFIRE"));
         playerScript.Invoke(nameof(playerScript.Respawn), 1.5f);
@@ -93,15 +93,15 @@ public class GameManager : MonoBehaviour
         bonfires = GameObject.FindGameObjectsWithTag("Bonfire");
     }
 
-    public void ToggleYouDiedMenu()
+    public void ToggleYouDiedScreen()
     {
-        if (youDiedMenu.activeSelf)
+        if (youDiedScreen.activeSelf)
         {
-            youDiedMenu.SetActive(false);
+            youDiedScreen.SetActive(false);
         }
         else
         {
-            youDiedMenu.SetActive(true);
+            youDiedScreen.SetActive(true);
         }
     }
 

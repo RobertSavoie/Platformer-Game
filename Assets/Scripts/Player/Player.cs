@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
     // Not Visible In Editor
     [NonSerialized] public bool disabled;
+    private bool loadAtEntrance;
     private string sceneName;
     private string currentBonfireName;
     private GameObject gameManager;
@@ -25,7 +26,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private PlayerMovement playerMovement;
-    private bool loadAtEntrance;
 
     // Start is called before the first frame update
     private void Start()
@@ -84,7 +84,8 @@ public class Player : MonoBehaviour
             disabled = true;
             anim.SetBool("Dead", true);
             anim.SetTrigger("Death");
-            gm.ToggleYouDiedMenu();
+            gm.ToggleYouDiedScreen();
+            gm.Invoke(nameof(gm.Continue), 1f);
         }
     }
 

@@ -127,6 +127,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3323051917895222969}
     m_Modifications:
+    - target: {fileID: 4411927859913512497, guid: 10cfc9e8e0b4eaa43bdf87a8f24942f5, type: 3}
+      propertyPath: m_YDamping
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4689911542465041028, guid: 10cfc9e8e0b4eaa43bdf87a8f24942f5, type: 3}
       propertyPath: m_RootOrder
       value: 0
