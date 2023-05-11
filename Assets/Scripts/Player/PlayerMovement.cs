@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (player.disabled || dash.isDashing) return;
+        if (player.disabled || dash.isDashing || PauseManager.paused) return;
 
         JumpAnimations();
 
@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
     // FixedUpdate is called every fixed framerate frame
     private void FixedUpdate()
     {
-        if (player.disabled || dash.isDashing) return;
+        if (player.disabled || dash.isDashing || PauseManager.paused) return;
 
         if (!isWallJumping)
         {
@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (player.disabled || dash.isDashing) return;
+        if (player.disabled || dash.isDashing || PauseManager.paused) return;
 
         // Set double jump to false if jump button not pressed and character on the ground
         if (!context.performed && IsGrounded())
@@ -204,19 +204,20 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        if (player.disabled || dash.isDashing)
+        if (player.disabled || dash.isDashing || PauseManager.paused)
         {
             horizontal = 0f;
             vertical = 0f;
             return;
         };
+
         horizontal = context.ReadValue<Vector2>().x;
         vertical = context.ReadValue<Vector2>().y;
     }
 
     public void Dash(InputAction.CallbackContext context)
     {
-        if (player.disabled || dash.isDashing) return;
+        if (player.disabled || dash.isDashing || PauseManager.paused) return;
 
         if (player.dashCloak)
         {

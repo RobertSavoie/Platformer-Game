@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     {
         if (sceneName != string.Empty && loadAtEntrance)
         {
-            foreach (GameObject entrance in gameManager.GetComponent<GameManager>().entrances)
+            foreach (GameObject entrance in gm.entrances)
             {
                 if (entrance.name == sceneName)
                 {
@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
             transform.position = GameObject.FindGameObjectWithTag("Bonfire").transform.position;
         }
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        gm = gameManager.GetComponent<GameManager>();
         sceneName = SceneManager.GetActiveScene().name;
     }
 
