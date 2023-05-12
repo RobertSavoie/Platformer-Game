@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject youDiedScreen;
     public GameObject loadingScreen;
+    public GameObject blackScreen;
     public GameObject deathLoadingScreen;
     public Slider[] sliders;
 
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        playerScript = GetComponent<Player>();
+        playerScript = player.GetComponent<Player>();
         bonfire = PlayerPrefs.GetString("BONFIRE");
         climbingGloves = PlayerPrefs.GetInt("CLIMBING_GLOVES");
         jumpBoots = PlayerPrefs.GetInt("JUMP_BOOTS");
@@ -127,6 +128,19 @@ public class GameManager : MonoBehaviour
             player.GetComponent<Rigidbody2D>().gravityScale = 0;
             player.GetComponent<CapsuleCollider2D>().enabled = false;
             loadingScreen.SetActive(true);
+        }
+    }
+
+    public void ToggleBlackScreen()
+    {
+        if (blackScreen.activeSelf)
+        {
+            blackScreen.SetActive(false);
+        }
+        else
+        {
+            playerScript.disabled = false;
+            blackScreen.SetActive(true);
         }
     }
 

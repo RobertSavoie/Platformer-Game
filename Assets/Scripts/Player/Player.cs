@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private bool loadAtEntrance;
     private string sceneName;
     private string currentBonfireName;
+    private GameObject currentCheckpoint;
     private GameObject gameManager;
     private GameManager gm;
     private Rigidbody2D rb;
@@ -76,6 +77,22 @@ public class Player : MonoBehaviour
         gm.Invoke(nameof(gm.ToggleDeathLoadingScreen), 1f);
     }
 
+    public void DamageFloorRespawn()
+    {
+        gm.ToggleBlackScreen();
+        transform.position = currentCheckpoint.transform.position;
+        gm.Invoke(nameof(gm.ToggleBlackScreen), 0.5f);
+    }
+
+    public void DamageFloor()
+    {
+        disabled = true;
+        GetComponent<PlayerMovement>().StopMovement();
+        anim.SetTrigger("FloorDamage");
+        UpdateHealthBar(-1f);
+        Invoke(nameof(DamageFloorRespawn), 0.6f);
+    }
+
     public void CheckDeath()
     {
         if (anim.GetBool("Dead")) return;
@@ -106,6 +123,7 @@ public class Player : MonoBehaviour
             health = maxHealth;
         }
         gm.sliders[0].value = health / maxHealth;
+        CheckDeath();
     }
 
     public void UpdateEnergyBar(float energyChange)
@@ -135,16 +153,18 @@ public class Player : MonoBehaviour
         {
             playerMovement.Knockback(collision);
             UpdateHealthBar(collision.gameObject.GetComponent<Enemy>().damageToPlayer * -1f);
-            CheckDeath();
         }
         if (collision.gameObject.CompareTag("Enemy") && anim.GetBool("Blocking"))
         {
             anim.SetTrigger("BlockFlash");
         }
+        if (collision.gameObject.CompareTag("DamageGround"))
+        {
+            DamageFloor();
+        }
         if (collision.gameObject.CompareTag("FallDeath"))
         {
             UpdateHealthBar(-100f);
-            CheckDeath();
         }
     }
 
@@ -155,6 +175,10 @@ public class Player : MonoBehaviour
         {
             currentBonfireName = collision.gameObject.name;
             PlayerPrefs.SetString("BONFIRE", collision.gameObject.name);
+        }
+        if (collision.CompareTag("Checkpoint"))
+        {
+            currentCheckpoint = collision.gameObject;
         }
         if (collision.CompareTag("Food"))
         {

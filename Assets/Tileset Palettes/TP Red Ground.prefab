@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 2773614850003207566}
   - component: {fileID: 5485434020951563781}
   m_Layer: 0
-  m_Name: TP Climbable Wall
+  m_Name: TP Red Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
